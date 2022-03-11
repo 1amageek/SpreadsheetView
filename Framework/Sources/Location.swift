@@ -6,7 +6,7 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 public struct Location: Hashable {
     public let row: Int

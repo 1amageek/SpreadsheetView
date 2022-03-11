@@ -6,15 +6,16 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import CoreGraphics
 import SpreadsheetView
 
 class HeaderCell: Cell {
-    let label = UILabel()
+    let label = Label()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+        backgroundColor = Color(white: 0.95, alpha: 1.0)
 
         label.frame = bounds
         label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -31,7 +32,7 @@ class HeaderCell: Cell {
 }
 
 class TextCell: Cell {
-    let label = UILabel()
+    let label = Label()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -50,7 +51,7 @@ class TextCell: Cell {
 }
 
 class TaskCell: Cell {
-    let label = UILabel()
+    let label = Label()
 
     override var frame: CGRect {
         didSet {
@@ -76,10 +77,10 @@ class TaskCell: Cell {
 }
 
 class ChartBarCell: Cell {
-    let colorBarView = UIView()
+    let colorBarView = View()
     let label = UILabel()
 
-    var color: UIColor = .clear {
+    var color: Color = .clear {
         didSet {
             colorBarView.backgroundColor = color
         }

@@ -55,7 +55,7 @@ final class Border: UIView {
         guard let context = UIGraphicsGetCurrentContext() else {
             return
         }
-        context.setFillColor(UIColor.clear.cgColor)
+        context.setFillColor(Color.clear.cgColor)
         if case let .solid(width, color) = borders.left {
             context.move(to: CGPoint(x: width * 0.5, y: 0))
             context.addLine(to: CGPoint(x: width * 0.5, y: bounds.height))

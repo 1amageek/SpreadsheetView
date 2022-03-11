@@ -14,17 +14,17 @@ class ViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetVi
 
     let dates = ["7/10/2017", "7/11/2017", "7/12/2017", "7/13/2017", "7/14/2017", "7/15/2017", "7/16/2017"]
     let days = ["MONDAY", "TUESDAY", "WEDNSDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
-    let dayColors = [UIColor(red: 0.918, green: 0.224, blue: 0.153, alpha: 1),
-                     UIColor(red: 0.106, green: 0.541, blue: 0.827, alpha: 1),
-                     UIColor(red: 0.200, green: 0.620, blue: 0.565, alpha: 1),
-                     UIColor(red: 0.953, green: 0.498, blue: 0.098, alpha: 1),
-                     UIColor(red: 0.400, green: 0.584, blue: 0.141, alpha: 1),
-                     UIColor(red: 0.835, green: 0.655, blue: 0.051, alpha: 1),
-                     UIColor(red: 0.153, green: 0.569, blue: 0.835, alpha: 1)]
+    let dayColors = [Color(red: 0.918, green: 0.224, blue: 0.153, alpha: 1),
+                     Color(red: 0.106, green: 0.541, blue: 0.827, alpha: 1),
+                     Color(red: 0.200, green: 0.620, blue: 0.565, alpha: 1),
+                     Color(red: 0.953, green: 0.498, blue: 0.098, alpha: 1),
+                     Color(red: 0.400, green: 0.584, blue: 0.141, alpha: 1),
+                     Color(red: 0.835, green: 0.655, blue: 0.051, alpha: 1),
+                     Color(red: 0.153, green: 0.569, blue: 0.835, alpha: 1)]
     let hours = ["6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 AM", "1:00 PM", "2:00 PM",
                  "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM"]
-    let evenRowColor = UIColor(red: 0.914, green: 0.914, blue: 0.906, alpha: 1)
-    let oddRowColor: UIColor = .white
+    let evenRowColor = Color(red: 0.914, green: 0.914, blue: 0.906, alpha: 1)
+    let oddRowColor: Color = .white
     let data = [
         ["", "", "Take medicine", "", "", "", "", "", "", "", "", "", "", "Movie with family", "", "", "", "", "", ""],
         ["Leave for cabin", "", "", "", "", "Lunch with Tim", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],

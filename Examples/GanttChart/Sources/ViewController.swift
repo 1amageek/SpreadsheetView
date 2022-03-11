@@ -83,9 +83,9 @@ class ViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetVi
         ["Air condition check", "3", "7", "1"],
         ["Furniture installation", "11", "8", "1"]
     ]
-    let colors = [UIColor(red: 0.314, green: 0.698, blue: 0.337, alpha: 1),
-                  UIColor(red: 1.000, green: 0.718, blue: 0.298, alpha: 1),
-                  UIColor(red: 0.180, green: 0.671, blue: 0.796, alpha: 1)]
+    let colors = [Color(red: 0.314, green: 0.698, blue: 0.337, alpha: 1),
+                  Color(red: 1.000, green: 0.718, blue: 0.298, alpha: 1),
+                  Color(red: 0.180, green: 0.671, blue: 0.796, alpha: 1)]
 
     override func viewDidLoad() {
         super.viewDidLoad()

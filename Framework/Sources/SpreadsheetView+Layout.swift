@@ -6,7 +6,8 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import CoreGraphics
 
 extension SpreadsheetView {
     public override func layoutSubviews() {
@@ -281,7 +282,7 @@ extension SpreadsheetView {
             tableView.frame = tableView.state.frame
         }
 
-        let contentInset: UIEdgeInsets
+        let contentInset: EdgeInsets
         if #available(iOS 11.0, *) {
             contentInset = rootView.adjustedContentInset
         } else {
@@ -321,7 +322,7 @@ extension SpreadsheetView {
         resetOverlayViewContentSize(contentInset)
     }
 
-    func resetOverlayViewContentSize(_ contentInset: UIEdgeInsets) {
+    func resetOverlayViewContentSize(_ contentInset: EdgeInsets) {
         let width = contentInset.left + contentInset.right + tableView.state.frame.origin.x + tableView.state.contentSize.width
         let height = contentInset.top + contentInset.bottom + tableView.state.frame.origin.y + tableView.state.contentSize.height
         overlayView.contentSize = CGSize(width: width, height: height)

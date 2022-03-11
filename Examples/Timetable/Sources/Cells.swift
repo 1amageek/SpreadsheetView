@@ -6,7 +6,7 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 import SpreadsheetView
 
 class HourCell: Cell {
@@ -17,7 +17,7 @@ class HourCell: Cell {
         label.frame = bounds
 
         label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        label.backgroundColor = UIColor(red: 0.220, green: 0.471, blue: 0.871, alpha: 1)
+        label.backgroundColor = Color(red: 0.220, green: 0.471, blue: 0.871, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .white
         label.textAlignment = .center
@@ -91,7 +91,7 @@ class SlotCell: Cell {
 class BlankCell: Cell {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(white: 0.9, alpha: 1)
+        backgroundColor = Color(white: 0.9, alpha: 1)
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -6,7 +6,7 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import SpreadsheetView
 
 class HeaderCell: Cell {
@@ -60,7 +60,7 @@ class TextCell: Cell {
         super.init(frame: frame)
 
         let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.2)
+        backgroundView.backgroundColor = Color(red: 0, green: 0, blue: 1, alpha: 0.2)
         selectedBackgroundView = backgroundView
 
         label.frame = bounds

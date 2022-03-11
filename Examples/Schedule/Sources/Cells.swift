@@ -93,7 +93,7 @@ class TimeCell: Cell {
 
 class ScheduleCell: Cell {
     let label = UILabel()
-    var color: UIColor = .clear {
+    var color: Color = .clear {
         didSet {
             backgroundView?.backgroundColor = color
         }

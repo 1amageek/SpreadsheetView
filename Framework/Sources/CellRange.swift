@@ -6,7 +6,8 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import CoreGraphics
 
 public final class CellRange {
     public let from: Location

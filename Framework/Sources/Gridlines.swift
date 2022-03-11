@@ -6,7 +6,8 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import CoreGraphics
 
 public struct Gridlines {
     public var top: GridStyle
@@ -38,6 +39,9 @@ extension GridStyle: Equatable {
     }
 }
 
+#if os(iOS)
+import UIKit
+
 final class Gridline: CALayer {
     var color: UIColor = .clear {
         didSet {
@@ -61,3 +65,32 @@ final class Gridline: CALayer {
         return nil
     }
 }
+
+#else
+import UIKit
+
+final class Gridline: CALayer {
+    var color: UIColor = .clear {
+        didSet {
+            backgroundColor = color.cgColor
+        }
+    }
+
+    override init() {
+        super.init()
+    }
+
+    override init(layer: Any) {
+        super.init(layer: layer)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override func action(forKey event: String) -> CAAction? {
+        return nil
+    }
+}
+#endif
+

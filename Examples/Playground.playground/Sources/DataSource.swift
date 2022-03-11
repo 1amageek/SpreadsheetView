@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 import SpreadsheetView
 
 public class DataSource: SpreadsheetViewDataSource {
