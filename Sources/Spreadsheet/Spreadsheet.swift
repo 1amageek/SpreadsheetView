@@ -29,33 +29,36 @@ public struct Spreadsheet<Content>: View where Content: View {
         self.content = content
     }
 
-    private var widthForColumn: CGFloat = 64
-    private var heightForRow: CGFloat = 44
+    private var widthForColumn: (_ column: Int) -> CGFloat = { _ in 64 }
+    private var heightForRow: (_ row: Int) -> CGFloat = { _ in 44 }
     private var frozenColumns: Int = 0
     private var frozenRows: Int = 0
 
-    init(_ matrix: Matrix,
-         widthForColumn: CGFloat,
-         heightForRow: CGFloat,
-         frozenColumns: Int,
-         frozenRows: Int,
-         @ViewBuilder content: @escaping (IndexPath) -> Content) {
+    init(
+        _ matrix: Matrix,
+        frozenColumns: Int,
+        frozenRows: Int,
+        widthForColumn: @escaping (_ column: Int) -> CGFloat,
+        heightForRow: @escaping (_ row: Int) -> CGFloat,
+        @ViewBuilder content: @escaping (IndexPath) -> Content
+    ) {
         self.matrix = matrix
-        self.widthForColumn = widthForColumn
-        self.heightForRow = heightForRow
         self.frozenColumns = frozenColumns
         self.frozenRows = frozenRows
+        self.widthForColumn = widthForColumn
+        self.heightForRow = heightForRow
         self.content = content
     }
 
     public var body: some View {
-        Representable(matrix, widthForColumn: widthForColumn, heightForRow: heightForRow, frozenColumns: frozenColumns, frozenRows: frozenRows, content: content)
+        Representable(matrix, frozenColumns: frozenColumns, frozenRows: frozenRows, widthForColumn: widthForColumn, heightForRow: heightForRow, content: content)
     }
 }
 
 public struct Matrix {
 
     public var numberOfRows: Int
+    
     public var numberOfColumns: Int
 
     public init(_ numberOfRows: Int, _ numberOfColumns: Int) {
@@ -67,15 +70,48 @@ public struct Matrix {
 extension Spreadsheet {
 
     public func cellFrame(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        let width = width ?? widthForColumn
-        let height = height ?? heightForRow
-        return .init(matrix, widthForColumn: width, heightForRow: height, frozenColumns: frozenColumns, frozenRows: frozenRows, content: content)
+        return .init(
+            matrix,
+            frozenColumns: frozenColumns,
+            frozenRows: frozenRows,
+            widthForColumn: { column in
+                return width ?? widthForColumn(column)
+            },
+            heightForRow: { row in
+                return height ?? heightForRow(row)
+            },
+            content: content)
+    }
+
+    public func width(_ widthForColumn: @escaping (_ column: Int) -> CGFloat) -> Self {
+        return .init(
+            matrix,
+            frozenColumns: frozenColumns,
+            frozenRows: frozenRows,
+            widthForColumn: widthForColumn,
+            heightForRow: { row in heightForRow(row) },
+            content: content)
+    }
+
+    public func height(_ heightForRow: @escaping (_ row: Int) -> CGFloat) -> Self {
+        return .init(
+            matrix,
+            frozenColumns: frozenColumns,
+            frozenRows: frozenRows,
+            widthForColumn: { column in widthForColumn(column) },
+            heightForRow: heightForRow,
+            content: content)
     }
 
     public func frozon(columns: Int? = nil, rows: Int? = nil) -> Self {
         let columns = columns ?? frozenColumns
         let rows = rows ?? frozenRows
-        return .init(matrix, widthForColumn: widthForColumn, heightForRow: heightForRow, frozenColumns: columns, frozenRows: rows, content: content)
+        return .init(matrix,
+                     frozenColumns: columns,
+                     frozenRows: rows,
+                     widthForColumn: widthForColumn,
+                     heightForRow: heightForRow,
+                     content: content)
     }
 }
 
@@ -93,31 +129,33 @@ extension Spreadsheet {
     struct Representable: ViewRepresentable {
 
         var matrix: Matrix
-        var widthForColumn: CGFloat
-        var heightForRow: CGFloat
         var frozenColumns: Int
         var frozenRows: Int
+        var widthForColumn: (Int) -> CGFloat
+        var heightForRow: (Int) -> CGFloat
         var content: (IndexPath) -> Content
 
-        init(_ matrix: Matrix,
-             widthForColumn: CGFloat,
-             heightForRow: CGFloat,
-             frozenColumns: Int,
-             frozenRows: Int,
-             content: @escaping (IndexPath) -> Content) {
+        init(
+            _ matrix: Matrix,
+            frozenColumns: Int,
+            frozenRows: Int,
+            widthForColumn: @escaping (Int) -> CGFloat,
+            heightForRow: @escaping (Int) -> CGFloat,
+            content: @escaping (IndexPath) -> Content
+        ) {
             self.matrix = matrix
-            self.widthForColumn = widthForColumn
-            self.heightForRow = heightForRow
             self.frozenColumns = frozenColumns
             self.frozenRows = frozenRows
+            self.widthForColumn = widthForColumn
+            self.heightForRow = heightForRow
             self.content = content
         }
 
         func makeCoordinator() -> Coordinator {
-            Coordinator(matrix, widthForColumn: widthForColumn, heightForRow: heightForRow, frozenColumns: frozenColumns, frozenRows: frozenRows, content: content)
+            Coordinator(matrix, frozenColumns: frozenColumns, frozenRows: frozenRows, widthForColumn: widthForColumn, heightForRow: heightForRow, content: content)
         }
 
-        #if os(iOS)
+#if os(iOS)
         func makeUIView(context: Context) -> UIView {
             context.coordinator.viewController.view
         }
@@ -125,15 +163,15 @@ extension Spreadsheet {
         func updateUIView(_ rootView: UIView, context: Context) {
 
         }
-        #else
+#else
         func makeNSView(context: Context) -> NSView {
-
+            context.coordinator.viewController.view
         }
 
         func updateNSView(_ rootView: NSView, context: Context) {
 
         }
-        #endif
+#endif
     }
 
     class Coordinator: NSObject, SpreadsheetViewDataSource, SpreadsheetViewDelegate {
@@ -141,23 +179,23 @@ extension Spreadsheet {
         var viewController: ViewController = ViewController()
         var spreadsheetView: SpreadsheetView = SpreadsheetView(frame: .zero)
         var matrix: Matrix
-        var widthForColumn: CGFloat
-        var heightForRow: CGFloat
         var frozenColumns: Int
         var frozenRows: Int
+        var widthForColumn: (Int) -> CGFloat
+        var heightForRow: (Int) -> CGFloat
         var content: (IndexPath) -> Content
 
         init(_ matrix: Matrix,
-             widthForColumn: CGFloat,
-             heightForRow: CGFloat,
              frozenColumns: Int,
              frozenRows: Int,
+             widthForColumn: @escaping (Int) -> CGFloat,
+             heightForRow: @escaping (Int) -> CGFloat,
              content: @escaping (IndexPath) -> Content) {
             self.matrix = matrix
-            self.widthForColumn = widthForColumn
-            self.heightForRow = heightForRow
             self.frozenColumns = frozenColumns
             self.frozenRows = frozenRows
+            self.widthForColumn = widthForColumn
+            self.heightForRow = heightForRow
             self.content = content
             super.init()
             self.viewController.view = spreadsheetView
@@ -174,12 +212,12 @@ extension Spreadsheet {
             return cell
         }
 
-        func spreadsheetView(_ spreadsheetView: SpreadsheetView, heightForRow column: Int) -> CGFloat {
-            return heightForRow
+        func spreadsheetView(_ spreadsheetView: SpreadsheetView, widthForColumn column: Int) -> CGFloat {
+            return widthForColumn(column)
         }
 
-        func spreadsheetView(_ spreadsheetView: SpreadsheetView, widthForColumn column: Int) -> CGFloat {
-            return widthForColumn
+        func spreadsheetView(_ spreadsheetView: SpreadsheetView, heightForRow row: Int) -> CGFloat {
+            return heightForRow(row)
         }
 
         func numberOfColumns(in spreadsheetView: SpreadsheetView) -> Int {
@@ -205,7 +243,15 @@ struct Spreadsheet_Previews: PreviewProvider {
         Spreadsheet(100, 100) { indexPath in
             Text("\(indexPath.row), \(indexPath.column)")
         }
-        .cellFrame(width: 100, height: 100)
         .frozon(columns: 2, rows: 2)
+        .width { column in
+            return 120
+        }
+        .height { row in
+            if row <= 2 {
+                return 100
+            }
+            return 44
+        }
     }
 }
