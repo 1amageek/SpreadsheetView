@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <FileRef
+      location = "group:">
+   </FileRef>
    <Group
       location = "container:"
       name = "Framework">
@@ -11,6 +14,9 @@
    <Group
       location = "container:"
       name = "Examples">
+      <FileRef
+         location = "group:/Users/1amageek/Desktop/SpreadsheetView/Examples/Spreadsheet/SpreadsheetUI.xcodeproj">
+      </FileRef>
       <FileRef
          location = "group:Examples/ClassData/ClassData.xcodeproj">
       </FileRef>

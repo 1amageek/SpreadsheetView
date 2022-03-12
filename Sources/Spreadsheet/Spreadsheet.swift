@@ -154,12 +154,22 @@ extension Spreadsheet {
             Coordinator(matrix, frozenColumns: frozenColumns, frozenRows: frozenRows, widthForColumn: widthForColumn, heightForRow: heightForRow, content: content)
         }
 
+        func updateCoordinator(context: Context) {
+            context.coordinator.matrix = matrix
+            context.coordinator.frozenColumns = frozenColumns
+            context.coordinator.frozenRows = frozenRows
+            context.coordinator.widthForColumn = widthForColumn
+            context.coordinator.heightForRow = heightForRow
+            context.coordinator.content = content
+        }
+
 #if os(iOS)
         func makeUIView(context: Context) -> UIView {
             context.coordinator.viewController.view
         }
 
         func updateUIView(_ rootView: UIView, context: Context) {
+            updateCoordinator(context: context)
             context.coordinator.spreadsheetView.reloadData()
         }
 #else
@@ -168,6 +178,7 @@ extension Spreadsheet {
         }
 
         func updateNSView(_ rootView: NSView, context: Context) {
+            updateCoordinator(context: context)
             context.coordinator.spreadsheetView.reloadData()
         }
 #endif
@@ -238,19 +249,40 @@ extension Spreadsheet {
 }
 
 struct Spreadsheet_Previews: PreviewProvider {
-    static var previews: some View {
-        Spreadsheet(100, 100) { indexPath in
-            Text("\(indexPath.row), \(indexPath.column)")
-        }
-        .frozon(columns: 2, rows: 2)
-        .width { column in
-            return 120
-        }
-        .height { row in
-            if row <= 2 {
-                return 100
+
+    struct ContentView: View {
+
+        @State var columns: Int = 4
+
+        @State var rows: Int = 4
+
+        var body: some View {
+
+            VStack {
+
+                Button("Add") {
+                    columns += 1
+                    rows += 1
+                }
+
+                Spreadsheet(columns, rows) { indexPath in
+                    Text("\(indexPath.row), \(indexPath.column)")
+                }
+                .frozon(columns: 2, rows: 2)
+                .width { column in
+                    return 120
+                }
+                .height { row in
+                    if row <= 2 {
+                        return 100
+                    }
+                    return 44
+                }
             }
-            return 44
         }
+    }
+
+    static var previews: some View {
+        ContentView()
     }
 }
