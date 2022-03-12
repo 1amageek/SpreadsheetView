@@ -125,7 +125,6 @@ extension Spreadsheet {
     internal typealias ViewController = NSViewController
 #endif
 
-    
     struct Representable: ViewRepresentable {
 
         var matrix: Matrix
@@ -161,7 +160,7 @@ extension Spreadsheet {
         }
 
         func updateUIView(_ rootView: UIView, context: Context) {
-
+            context.coordinator.spreadsheetView.reloadData()
         }
 #else
         func makeNSView(context: Context) -> NSView {
@@ -169,7 +168,7 @@ extension Spreadsheet {
         }
 
         func updateNSView(_ rootView: NSView, context: Context) {
-
+            context.coordinator.spreadsheetView.reloadData()
         }
 #endif
     }
