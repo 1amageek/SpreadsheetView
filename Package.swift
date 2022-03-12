@@ -16,7 +16,8 @@ let package = Package(
         .target(
             name: "SpreadsheetView",
             dependencies: [],
-            path: "Framework/Sources"
+            path: "Framework/Sources",
+            exclude: ["Info.plist"]
         ),
         .target(
             name: "Spreadsheet",

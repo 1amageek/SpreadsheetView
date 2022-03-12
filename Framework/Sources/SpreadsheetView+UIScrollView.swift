@@ -18,6 +18,27 @@ extension SpreadsheetView {
         }
     }
 
+    @available(iOS 11.1, *)
+    public var verticalScrollIndicatorInsets: UIEdgeInsets {
+        get {
+            return overlayView.verticalScrollIndicatorInsets
+        }
+        set {
+            overlayView.verticalScrollIndicatorInsets = newValue
+        }
+    }
+
+    @available(iOS 11.1, *)
+    public var horizontalScrollIndicatorInsets: UIEdgeInsets {
+        get {
+            return overlayView.horizontalScrollIndicatorInsets
+        }
+        set {
+            overlayView.horizontalScrollIndicatorInsets = newValue
+        }
+    }
+    
+    @available(*, deprecated)
     public var scrollIndicatorInsets: UIEdgeInsets {
         get {
             return overlayView.scrollIndicatorInsets
